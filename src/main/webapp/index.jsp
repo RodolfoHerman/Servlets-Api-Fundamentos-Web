@@ -8,5 +8,9 @@
 </head>
 <body>
     <h2>Bem vindo a aplicação !!</h2>
+    <form action="novaEmpresa" method="POST">
+        Nome: <input type="text" name="nome" /><br />
+        <input type="submit" value="Enviar" />
+    </form>
 </body>
 </html>
