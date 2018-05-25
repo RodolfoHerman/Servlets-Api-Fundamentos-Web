@@ -51,4 +51,5 @@ public class BuscaEmpresa extends HttpServlet{
 
     //Diretórios dentro de WebContent que não são acessíveis para o cliente final via a URI
     //WEB-INF e o META-INF 
+    //http://devcanvas.org/deploy-a-web-application-from-the-command-line-by-using-tomcat-maven-plugin/
 }
