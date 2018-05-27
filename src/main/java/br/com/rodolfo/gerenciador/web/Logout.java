@@ -41,7 +41,7 @@ public class Logout extends HttpServlet {
         //não somente o valor "usuario.logado"
         //req.getSession().invalidate();
 
-        req.getSession().removeAttribute("usuario.logado");
+        req.getSession().removeAttribute("usuarioLogado");
 
         //Redirecionamento do lado do cliente, o problema aqui é que a página fica
         //na pasta webapp e se o usuário digitar http://localhost:8080/gerenciador/logout.html 

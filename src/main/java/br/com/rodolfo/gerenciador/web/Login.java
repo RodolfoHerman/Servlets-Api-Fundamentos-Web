@@ -75,7 +75,7 @@ public class Login extends HttpServlet {
             HttpSession session = req.getSession();
 
             //Como a informação de sessão fica do lado do servidor pode-se guardar o OBJETO USUARIO
-            session.setAttribute("usuario.logado", usuario);
+            session.setAttribute("usuarioLogado", usuario);
 
             writer.println("<html><body>Usuario logado : " + email + "</body></html>");
         }

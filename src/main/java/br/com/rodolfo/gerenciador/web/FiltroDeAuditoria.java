@@ -69,7 +69,7 @@ public class FiltroDeAuditoria implements Filter {
     //Utilizando a SESSÃO do usuário para realizar a validação no lado do servidor ao invés de COOKIE
     private String getUsuario(HttpServletRequest req) {
         
-        Usuario usuario = (Usuario) req.getSession().getAttribute("usuario.logado");
+        Usuario usuario = (Usuario) req.getSession().getAttribute("usuarioLogado");
 
         if(usuario == null) {
 

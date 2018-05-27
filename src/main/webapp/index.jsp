@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,15 @@
 </head>
 <body>
     <h2>Bem vindo a aplicação !!</h2>
+
+    <!-- Repare que não usamos o "req.setAttribute("usuarioLogado", usuario)" para recuprar essa informação
+    e mostrar na página. Isso acontece porque a expression language é capaz de buscar variáveis no escopo
+    do RESQUEST e também no escopo da SESSION, caso ela não ache no escopo do REQUEST ela procura no
+    escopo da SESSION -->
+
+    <c:if test="${not empty usuarioLogado}">
+        Você está logado como ${usuarioLogado.email}
+    </c:if>
     <form action="novaEmpresa" method="POST">
         Nome: <input type="text" name="nome" /><br />
         <input type="submit" value="Enviar" />
