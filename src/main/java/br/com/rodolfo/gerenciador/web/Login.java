@@ -20,6 +20,27 @@ import br.com.rodolfo.gerenciador.dao.UsuarioDAO;
 @WebServlet(urlPatterns="/login")
 public class Login extends HttpServlet {
 
+    //Lembrar que uma servlet é criada apenas uma vez. Ela possui uma instância
+    //na memória. Ter cuidado para criar variáveis fora de escopo do método, pois elas são
+    //compartilhadas com todos os usuários que estão acessando a Servlet 
+    // public Login() {
+    //     System.out.println("Instanciando uma Servlet do tipo Login "
+    //             + this);
+    // } 
+    
+    // @Override
+    // public void init() throws ServletException {
+    //     super.init();
+    //     System.out.println("Inicializando a Servlet " + this);
+    // }
+    
+    // @Override
+    // public void destroy() {
+    //     super.destroy();
+    //     System.out.println("Destruindo a Servlet " + this);
+    // } 
+    
+    
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
