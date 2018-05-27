@@ -38,6 +38,9 @@ public class Login extends HttpServlet {
             //Criar um cookie com as credenciais do usuário
             Cookie cookie = new Cookie("usuario.logado", email);
 
+            //Setar o tempo de vida do cookie em 10 minutos (60 segundos * 10)
+            cookie.setMaxAge(60 * 10);
+
             //Retornar o cookie para ser setado no cliente
             resp.addCookie(cookie);
 

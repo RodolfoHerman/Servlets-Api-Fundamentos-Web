@@ -19,5 +19,9 @@
         <input type="submit" value="Login" />
     </form>
 
+    <form action="logout" method="post">
+        <button type="submit">Deslogar</button>
+    </form>
+
 </body>
 </html>

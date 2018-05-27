@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * FiltroDeAuditoria
@@ -31,11 +32,24 @@ public class FiltroDeAuditoria implements Filter {
 			throws IOException, ServletException {
         
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
 
         String uri = req.getRequestURI();
+        String usuario = "<deslogado>";
+
+        Cookie cookie = new Cookies(req.getCookies()).buscaUsuarioLogado();
+
+        //A cada nova requisição o tempo de vida do cookie é setado para mais 10 minutos
+        if(cookie != null) {
+
+            cookie.setMaxAge(60 * 10);
+            usuario = cookie.getValue();
+            resp.addCookie(cookie);
+        }
+
 
         //Verificar se as credencias via COOKIE do usuário são válidas
-        String usuario = getUsuario(req);
+        //String usuario = getUsuario(req);
 
         //Imprimi o acesso das URI's feitas pelo usuário
         System.out.println("Usuário " + usuario + " acessando URI : " + uri);
@@ -48,30 +62,31 @@ public class FiltroDeAuditoria implements Filter {
 	public void destroy() {
 		
     }
-    
-    //Retorna quem está logado
-    private String getUsuario(HttpServletRequest req) {
+
+
+    //Retorna quem está logado (Metodo removido e criado a classe Cookies que possui a lógica)
+    // private String getUsuario(HttpServletRequest req) {
         
-        String usuario = "<deslogado>";
+    //     String usuario = "<deslogado>";
 
-        Cookie[] cookies = req.getCookies();
+    //     Cookie[] cookies = req.getCookies();
 
-        if(cookies == null) {
+    //     if(cookies == null) {
 
-            return usuario;
-        }
+    //         return usuario;
+    //     }
 
-        for (Cookie cookie : cookies) {
+    //     for (Cookie cookie : cookies) {
             
-            if(cookie.getName().equals("usuario.logado")) {
+    //         if(cookie.getName().equals("usuario.logado")) {
 
-                usuario = cookie.getValue();
-            }
+    //             usuario = cookie.getValue();
+    //         }
 
-        }
+    //     }
 
-        return usuario;
-    }
+    //     return usuario;
+    // }
 
 
     
