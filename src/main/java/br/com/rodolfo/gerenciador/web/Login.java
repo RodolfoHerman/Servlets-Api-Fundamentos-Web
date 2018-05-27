@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.rodolfo.gerenciador.Usuario;
 import br.com.rodolfo.gerenciador.dao.UsuarioDAO;
@@ -35,14 +36,25 @@ public class Login extends HttpServlet {
 
         } else {
 
-            //Criar um cookie com as credenciais do usuário
-            Cookie cookie = new Cookie("usuario.logado", email);
+            //Utilizar SESSEION para marcar o usuário logado
+            {
+                //Criar um cookie com as credenciais do usuário
+                //Cookie cookie = new Cookie("usuario.logado", email);
 
-            //Setar o tempo de vida do cookie em 10 minutos (60 segundos * 10)
-            cookie.setMaxAge(60 * 10);
+                //Setar o tempo de vida do cookie em 10 minutos (60 segundos * 10)
+                //cookie.setMaxAge(60 * 10);
 
-            //Retornar o cookie para ser setado no cliente
-            resp.addCookie(cookie);
+                //Retornar o cookie para ser setado no cliente
+                //resp.addCookie(cookie);
+            }
+
+            //Pegar a session do usuário logado. O objeto HttpSession tem a vantagem
+            //de enviar menos informações entre as transações de response e request, ela atualiza de forma automática
+            //o tempo de vida do usuário logado, tem controle de concorrência para acessa-la.
+            HttpSession session = req.getSession();
+
+            //Como a informação de sessão fica do lado do servidor pode-se guardar o OBJETO USUARIO
+            session.setAttribute("usuario.logado", usuario);
 
             writer.println("<html><body>Usuario logado : " + email + "</body></html>");
         }

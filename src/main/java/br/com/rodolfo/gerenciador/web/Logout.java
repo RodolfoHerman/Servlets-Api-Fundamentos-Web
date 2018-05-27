@@ -21,17 +21,27 @@ public class Logout extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        //Buscar usuario logado se houver
-        Cookie cookie = new Cookies(req.getCookies()).buscaUsuarioLogado();
+        //Trabalhar com SESSION ao invés de COOKIES
+        {
+            //Buscar usuario logado se houver
+            // Cookie cookie = new Cookies(req.getCookies()).buscaUsuarioLogado();
 
-        if(cookie != null) {
-            
-            //Colocar o tempo de vida do cookie para zero
-            cookie.setMaxAge(0);
+            // if(cookie != null) {
+                
+            //     //Colocar o tempo de vida do cookie para zero
+            //     cookie.setMaxAge(0);
 
-            //Retornar o cookie com o tempo de validade zerado
-            resp.addCookie(cookie);
+            //     //Retornar o cookie com o tempo de validade zerado
+            //     resp.addCookie(cookie);
+            // }
         }
+
+        //O problema de invalidar a sessão é que irá remover todos os valores da sessão do HashMap
+        //não somente o valor "usuario.logado"
+        //req.getSession().invalidate();
+
+        req.getSession().removeAttribute("usuario.logado");
+
 
         writer.println("<html><body>Deslogado com sucesso !!</body></html>");
     }

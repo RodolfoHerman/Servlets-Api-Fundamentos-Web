@@ -13,6 +13,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.rodolfo.gerenciador.Usuario;
+
 /**
  * FiltroDeAuditoria
  */
@@ -35,18 +37,23 @@ public class FiltroDeAuditoria implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         String uri = req.getRequestURI();
-        String usuario = "<deslogado>";
 
-        Cookie cookie = new Cookies(req.getCookies()).buscaUsuarioLogado();
+        //Utilizar SESSÃO
+        {
+            // String usuario = "<deslogado>";
 
-        //A cada nova requisição o tempo de vida do cookie é setado para mais 10 minutos
-        if(cookie != null) {
+            // Cookie cookie = new Cookies(req.getCookies()).buscaUsuarioLogado();
 
-            cookie.setMaxAge(60 * 10);
-            usuario = cookie.getValue();
-            resp.addCookie(cookie);
+            // //A cada nova requisição o tempo de vida do cookie é setado para mais 10 minutos
+            // if(cookie != null) {
+
+            //     cookie.setMaxAge(60 * 10);
+            //     usuario = cookie.getValue();
+            //     resp.addCookie(cookie);
+            // }
         }
 
+        String usuario = getUsuario(req);
 
         //Verificar se as credencias via COOKIE do usuário são válidas
         //String usuario = getUsuario(req);
@@ -57,14 +64,31 @@ public class FiltroDeAuditoria implements Filter {
         //Necessário informar que é necessário continuar com o fluxo normal da aplicação, caso contrário, o servidor iria printar a URI do cod. acima e iria parar a aplicação.
         chain.doFilter(request, response);
 
-	}
+    }
+    
+    //Utilizando a SESSÃO do usuário para realizar a validação no lado do servidor ao invés de COOKIE
+    private String getUsuario(HttpServletRequest req) {
+        
+        Usuario usuario = (Usuario) req.getSession().getAttribute("usuario.logado");
+
+        if(usuario == null) {
+
+            return "<deslogado>";
+        }
+
+        //Atualizar o tempo de vida da sessão (OBS: o objeto já faz essa atualização sozinho).
+        //O objetivo aqui é mostrar que tem a possibilidade de alterar o valor do tempo
+        req.getSession().setMaxInactiveInterval(60 * 10);
+
+        return usuario.getEmail();
+    }
 
 	public void destroy() {
 		
     }
 
 
-    //Retorna quem está logado (Metodo removido e criado a classe Cookies que possui a lógica)
+    //Retorna quem está logado (Metodo removido e criado a classe Cookies que possui a lógica para tratar os COOKIES)
     // private String getUsuario(HttpServletRequest req) {
         
     //     String usuario = "<deslogado>";
