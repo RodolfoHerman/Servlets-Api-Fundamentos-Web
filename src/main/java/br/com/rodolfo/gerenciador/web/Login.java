@@ -17,9 +17,26 @@ import br.com.rodolfo.gerenciador.dao.UsuarioDAO;
 /**
  * Login
  */
-@WebServlet(urlPatterns="/login")
-public class Login extends HttpServlet {
+//@WebServlet(urlPatterns="/login") --> Com a nova lógica de MVC irá implmenetar a interface TAREFA
+public class Login implements Tarefa {
 
+    //Toda a lógica do DISPATCHER foi colocada no CONTROLLER
+    public String executa(HttpServletRequest req, HttpServletResponse resp) {
+        
+        String email = req.getParameter("email");
+        String senha = req.getParameter("senha");
+
+        Usuario usuario = new UsuarioDAO().buscaPorEmailESenha(email, senha);
+
+        if(usuario != null) {
+            HttpSession session = req.getSession();
+            session.setAttribute("usuarioLogado", usuario);
+        }
+
+        return "/WEB-INF/paginas/login.jsp";
+    }
+    
+    
     //Lembrar que uma servlet é criada apenas uma vez. Ela possui uma instância
     //na memória. Ter cuidado para criar variáveis fora de escopo do método, pois elas são
     //compartilhadas com todos os usuários que estão acessando a Servlet 
@@ -41,24 +58,24 @@ public class Login extends HttpServlet {
     // } 
     
     
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    //@Override
+    //protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
-        PrintWriter writer = resp.getWriter();
+        //PrintWriter writer = resp.getWriter();
 
-        String email = req.getParameter("email");
-        String senha = req.getParameter("senha");
+        //--->String email = req.getParameter("email");
+        //--->String senha = req.getParameter("senha");
 
-        Usuario usuario = new UsuarioDAO().buscaPorEmailESenha(email, senha);
+        //--->Usuario usuario = new UsuarioDAO().buscaPorEmailESenha(email, senha);
 
-        if(usuario == null) {
+        //--->if(usuario == null) {
 
-            writer.println("<html><body>Usuario ou senha invalido</body></html>");
+        //     writer.println("<html><body>Usuario ou senha invalido</body></html>");
 
-        } else {
+        // } else {
 
             //Utilizar SESSEION para marcar o usuário logado
-            {
+            //{
                 //Criar um cookie com as credenciais do usuário
                 //Cookie cookie = new Cookie("usuario.logado", email);
 
@@ -67,19 +84,19 @@ public class Login extends HttpServlet {
 
                 //Retornar o cookie para ser setado no cliente
                 //resp.addCookie(cookie);
-            }
+            //}
 
             //Pegar a session do usuário logado. O objeto HttpSession tem a vantagem
             //de enviar menos informações entre as transações de response e request, ela atualiza de forma automática
             //o tempo de vida do usuário logado, tem controle de concorrência para acessa-la.
-            HttpSession session = req.getSession();
+            //--->HttpSession session = req.getSession();
 
             //Como a informação de sessão fica do lado do servidor pode-se guardar o OBJETO USUARIO
-            session.setAttribute("usuarioLogado", usuario);
+            //--->session.setAttribute("usuarioLogado", usuario);
 
-            writer.println("<html><body>Usuario logado : " + email + "</body></html>");
-        }
+            //--->writer.println("<html><body>Usuario logado : " + email + "</body></html>");
+        //}
 
-    }
+    //}
     
 }
